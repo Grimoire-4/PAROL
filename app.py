@@ -1,8 +1,3 @@
-# =========================================
-# AI Predictor for Patient No-Show Appointments
-# Operational Risk Classification
-# Hackathon Prototype | Single File
-# =========================================
 
 import streamlit as st
 import pandas as pd
