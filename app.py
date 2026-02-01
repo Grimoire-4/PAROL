@@ -68,39 +68,38 @@ to improve hospital operations.
 st.sidebar.caption("Hackathon Prototype")
 
 # -----------------------------
-# Hackathon Identity Section
+# HERO HEADER (Always Visible)
 # -----------------------------
 st.markdown("""
 <div style="
-    background-color:#ffffff;
-    border-radius:16px;
-    padding:25px;
-    box-shadow:0 6px 18px rgba(0,0,0,0.08);
-    margin-bottom:30px;
+    background: linear-gradient(90deg, #2a7be4, #5fa8ff);
+    padding: 30px;
+    border-radius: 18px;
+    color: white;
+    text-align: center;
+    margin-bottom: 30px;
 ">
 
-<h2 style="color:#0b3c5d; text-align:center;">🏆 Hackathon Prototype</h2>
+<h1 style="margin-bottom: 10px; color: white;">
+🏥 AI Predictor for Patient No-Show Appointments
+</h1>
 
-<p style="text-align:center; font-size:18px;">
-<b>Problem Statement:</b><br>
-AI Predictor for Patient No-Show Appointments<br>
-<span style="font-size:14px;">(Operational Risk Classification)</span>
+<h3 style="margin-top: 0; font-weight: 400; color: #eaf3ff;">
+Operational Risk Classification • Hackathon Prototype
+</h3>
+
+<hr style="border: 1px solid rgba(255,255,255,0.3); margin: 20px 0;">
+
+<p style="font-size: 18px; margin-bottom: 5px;">
+<b>Team:</b> GFBQ-Team-Grimoire
 </p>
 
-<hr style="border:1px solid #e0e0e0;">
-
-<p style="text-align:center;">
-<b>Team Name:</b><br>
-<span style="font-size:17px;">GFBQ-Team-Grimoire</span>
-</p>
-
-<p style="text-align:center;">
-<b>Team Members:</b><br>
+<p style="font-size: 16px; margin-top: 0;">
 Alhamda Iqbal Sadiq • Ashmira Mirza • Shifa Akbani • Khudaija Harmain
 </p>
 
-<p style="text-align:center; font-size:14px; color:#555;">
-🧠 Decision-support system for hospital operations<br>
+<p style="font-size: 14px; opacity: 0.9; margin-top: 15px;">
+🧠 Decision-support system for hospital operations  
 ⚠️ Not a medical diagnosis tool
 </p>
 
