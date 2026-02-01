@@ -96,34 +96,40 @@ st.markdown("---")
 # Risk Logic
 # -----------------------------
 def predict_no_show_risk(lead_time, past_no_shows, reminder, distance, time_of_day, day_type):
-    risk = 0
+    risk = 10  # base risk (no appointment is ever zero-risk)
     reasons = []
 
     if lead_time > 14:
-        risk += 25
-        reasons.append("Long booking lead time")
+        risk += 30
+        reasons.append("📆 Appointment booked far in advance")
 
-    if past_no_shows > 1:
+    if past_no_shows >= 1:
         risk += 25
-        reasons.append("Past missed appointments")
+        reasons.append("❌ Previous missed appointment(s)")
 
     if reminder == "No":
-        risk += 20
-        reasons.append("No reminder sent")
+        risk += 25
+        reasons.append("📩 No reminder sent")
 
     if distance == "Far":
         risk += 15
-        reasons.append("Patient lives far away")
+        reasons.append("📍 Patient lives far from clinic")
 
     if time_of_day == "Evening":
         risk += 10
-        reasons.append("Evening appointment")
+        reasons.append("🌙 Evening appointment slot")
 
     if day_type == "Weekend":
-        risk += 5
-        reasons.append("Weekend scheduling")
+        risk += 10
+        reasons.append("🗓 Weekend scheduling")
+
+    # Compound risk boost (real-world behavior)
+    if lead_time > 14 and reminder == "No":
+        risk += 10
+        reasons.append("⚠️ Long lead time without reminder")
 
     return min(risk, 100), reasons
+
 
 # -----------------------------
 # Input Section
