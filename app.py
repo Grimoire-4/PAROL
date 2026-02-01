@@ -6,9 +6,6 @@
 import streamlit as st
 import pandas as pd
 
-# -----------------------------
-# Page Config (DO THIS FIRST)
-# -----------------------------
 st.set_page_config(
     page_title="Patient No-Show Predictor | GFBQ-Team-Grimoire",
     page_icon="🏥",
@@ -31,7 +28,7 @@ html, body, .stApp {
 """, unsafe_allow_html=True)
 
 # =====================================================
-# 🔥 HERO SECTION (TOP OF PAGE – ALWAYS VISIBLE)
+#  (TOP OF PAGE – ALWAYS VISIBLE)
 # =====================================================
 st.markdown("""
 <div style="
