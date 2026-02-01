@@ -1,12 +1,13 @@
 # =========================================
 # AI Predictor for Patient No-Show Appointments
-# Human-friendly | Explainable | Zero-dependency
+# Human-friendly | Visual | Zero-dependency
 # =========================================
 
 import streamlit as st
+import pandas as pd
 
 # -----------------------------
-# Page Configuration
+# Force Light Theme (CSS)
 # -----------------------------
 st.set_page_config(
     page_title="Patient No-Show Predictor",
@@ -14,25 +15,38 @@ st.set_page_config(
     layout="centered"
 )
 
+st.markdown("""
+<style>
+    body {
+        background: linear-gradient(180deg, #f5faff, #ffffff);
+    }
+    .main {
+        background-color: #f5faff;
+    }
+    h1, h2, h3 {
+        color: #003366;
+    }
+    .block-container {
+        padding: 2rem;
+    }
+</style>
+""", unsafe_allow_html=True)
+
 # -----------------------------
-# Sidebar – Friendly Context
+# Sidebar
 # -----------------------------
 st.sidebar.title("🏥 Clinic Assistant")
 st.sidebar.markdown("""
-This tool helps clinics **reduce missed appointments** by
-predicting **No-Show risk** *before* the appointment day.
+**Purpose:**  
+Predict appointment **No-Show risk**  
+for better hospital operations.
 
-👩‍⚕️ Designed for:
-- Front-desk staff
-- Clinic managers
-- Hospital operations teams
-
-🧠 Uses explainable operational logic  
-⚠️ Not a medical diagnosis tool
+✔ Non-medical  
+✔ Explainable  
+✔ Staff-friendly
 """)
 
-st.sidebar.markdown("---")
-st.sidebar.caption("Hackathon Prototype • Decision Support")
+st.sidebar.caption("Hackathon Prototype")
 
 # -----------------------------
 # Main Header
@@ -40,15 +54,14 @@ st.sidebar.caption("Hackathon Prototype • Decision Support")
 st.title("📅 Patient Appointment No-Show Predictor")
 
 st.markdown("""
-💡 **What does this do?**  
-It estimates the likelihood that a patient may **miss their appointment**
-and suggests **simple actions** to prevent it.
+This tool helps clinics **reduce missed appointments**
+by identifying **high-risk bookings in advance**.
 """)
 
 st.markdown("---")
 
 # -----------------------------
-# Risk Logic (Explainable + Operational)
+# Risk Logic
 # -----------------------------
 def predict_no_show_risk(lead_time, past_no_shows, reminder, distance, time_of_day, day_type):
     risk = 0
@@ -56,96 +69,122 @@ def predict_no_show_risk(lead_time, past_no_shows, reminder, distance, time_of_d
 
     if lead_time > 14:
         risk += 25
-        reasons.append("📆 Appointment booked far in advance")
+        reasons.append("Long booking lead time")
 
     if past_no_shows > 1:
         risk += 25
-        reasons.append("❌ History of missed appointments")
+        reasons.append("Past missed appointments")
 
     if reminder == "No":
         risk += 20
-        reasons.append("📩 No reminder sent")
+        reasons.append("No reminder sent")
 
     if distance == "Far":
         risk += 15
-        reasons.append("📍 Patient lives far from clinic")
+        reasons.append("Patient lives far away")
 
     if time_of_day == "Evening":
         risk += 10
-        reasons.append("🌙 Evening appointment slot")
+        reasons.append("Evening appointment")
 
     if day_type == "Weekend":
         risk += 5
-        reasons.append("🗓 Weekend scheduling")
+        reasons.append("Weekend scheduling")
 
     return min(risk, 100), reasons
 
 # -----------------------------
-# Input Section (Clean & Friendly)
+# Input Section
 # -----------------------------
-st.header("📝 Enter Appointment Details")
+st.header("📝 Appointment Details")
 
-col1, col2 = st.columns(2)
+c1, c2 = st.columns(2)
 
-with col1:
-    lead_time = st.slider("How many days before the appointment was it booked?", 1, 30, 10)
-    past_no_shows = st.slider("How many past appointments were missed?", 0, 5, 0)
-    reminder = st.selectbox("Was a reminder sent?", ["Yes", "No"])
+with c1:
+    lead_time = st.slider("📆 Days between booking & appointment", 1, 30, 10)
+    past_no_shows = st.slider("❌ Number of past no-shows", 0, 5, 0)
+    reminder = st.selectbox("📩 Reminder sent?", ["Yes", "No"])
 
-with col2:
-    time_of_day = st.selectbox("Appointment time", ["Morning", "Evening"])
-    day_type = st.selectbox("Day of appointment", ["Weekday", "Weekend"])
-    distance = st.selectbox("Patient distance from clinic", ["Near", "Far"])
+with c2:
+    time_of_day = st.selectbox("⏰ Appointment time", ["Morning", "Evening"])
+    day_type = st.selectbox("🗓 Appointment day", ["Weekday", "Weekend"])
+    distance = st.selectbox("📍 Patient distance", ["Near", "Far"])
 
 st.markdown("---")
 
 # -----------------------------
-# Prediction Button
+# Prediction
 # -----------------------------
-if st.button("🔍 Check No-Show Risk", use_container_width=True):
+if st.button("🔍 Predict No-Show Risk", use_container_width=True):
 
     risk_percent, reasons = predict_no_show_risk(
         lead_time, past_no_shows, reminder, distance, time_of_day, day_type
     )
 
     # -----------------------------
-    # Visual Risk Indicator
+    # Risk Overview
     # -----------------------------
-    st.subheader("📊 No-Show Risk Assessment")
+    st.subheader("📊 Risk Overview")
+
     st.progress(risk_percent / 100)
 
     if risk_percent >= 70:
-        st.error(f"🔴 **High Risk** — {risk_percent}% chance of No-Show")
+        st.error(f"🔴 High Risk — {risk_percent}% chance of No-Show")
     elif risk_percent >= 40:
-        st.warning(f"🟡 **Medium Risk** — {risk_percent}% chance of No-Show")
+        st.warning(f"🟡 Medium Risk — {risk_percent}% chance of No-Show")
     else:
-        st.success(f"🟢 **Low Risk** — {risk_percent}% chance of No-Show")
+        st.success(f"🟢 Low Risk — {risk_percent}% chance of No-Show")
 
     # -----------------------------
-    # Explainability Section
+    # Analytical Visual (SAFE)
     # -----------------------------
-    st.subheader("🧠 Why is this the risk?")
+    st.subheader("📈 Risk Contribution Analysis")
+
+    chart_data = pd.DataFrame({
+        "Factor": [
+            "Lead Time",
+            "Past No-Shows",
+            "Reminder",
+            "Distance",
+            "Time of Day",
+            "Day Type"
+        ],
+        "Impact Score": [
+            25 if lead_time > 14 else 5,
+            25 if past_no_shows > 1 else 5,
+            20 if reminder == "No" else 5,
+            15 if distance == "Far" else 5,
+            10 if time_of_day == "Evening" else 5,
+            5 if day_type == "Weekend" else 2
+        ]
+    }).set_index("Factor")
+
+    st.bar_chart(chart_data)
+
+    # -----------------------------
+    # Explainability
+    # -----------------------------
+    st.subheader("🧠 Why this risk?")
 
     if reasons:
         for r in reasons:
             st.write("•", r)
     else:
-        st.write("• No significant risk factors detected")
+        st.write("• No major risk factors detected")
 
     # -----------------------------
-    # Recommendation Section
+    # Recommendation
     # -----------------------------
-    st.subheader("🛠 What should the clinic do?")
+    st.subheader("🛠 Recommended Action")
 
     if risk_percent >= 70:
-        st.info("📞 Send reminder immediately and consider **safe overbooking**")
+        st.info("📞 Send reminder immediately + consider safe overbooking")
     elif risk_percent >= 40:
         st.info("📩 Send reminder or confirmation message")
     else:
-        st.info("✅ No action needed — appointment likely to be attended")
+        st.info("✅ No action needed")
 
-    st.markdown("---")
     st.caption(
-        "🔍 This prototype demonstrates **explainable operational intelligence**. "
-        "In real deployment, the same inputs can feed a trained machine learning model."
+        "🔍 Explainable operational intelligence prototype. "
+        "In production, these features feed a trained ML classifier."
     )
