@@ -63,6 +63,51 @@ section[data-testid="stSidebar"] {
 </style>
 """, unsafe_allow_html=True)
 
+# -----------------------------
+# Hackathon Identity Section
+# -----------------------------
+st.markdown("""
+<div style="
+    background-color:#ffffff;
+    border-radius:16px;
+    padding:25px;
+    box-shadow:0 6px 18px rgba(0,0,0,0.08);
+    margin-bottom:30px;
+">
+
+<h2 style="color:#0b3c5d; text-align:center;">🏆 Hackathon Prototype</h2>
+
+<p style="text-align:center; font-size:18px;">
+<b>Problem Statement:</b><br>
+AI Predictor for Patient No-Show Appointments<br>
+<span style="font-size:14px;">(Operational Risk Classification)</span>
+</p>
+
+<hr style="border:1px solid #e0e0e0;">
+
+<p style="text-align:center;">
+<b>Team Name:</b><br>
+<span style="font-size:17px;">GFBQ-Team-Grimoire</span>
+</p>
+
+<p style="text-align:center;">
+<b>Team Members:</b><br>
+Alhamda Iqbal Sadiq • Ashmira Mirza • Shifa Akbani • Khudaija Harmain
+</p>
+
+<p style="
+    text-align:center;
+    font-size:14px;
+    color:#555;
+    margin-top:15px;
+">
+🧠 This system provides <b>decision support</b> for hospital operations.<br>
+⚠️ It does <b>not</b> perform medical diagnosis.
+</p>
+
+</div>
+""", unsafe_allow_html=True)
+
 
 # -----------------------------
 # Sidebar
