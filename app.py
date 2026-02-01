@@ -153,6 +153,106 @@ if st.button("🔍 Predict No-Show Risk", use_container_width=True):
         lead_time, past_no_shows, reminder, distance, time_of_day, day_type
     )
 
+    st.subheader("📊 Risk Overview")
+
+    # 🌡️ Visual Risk Gauge
+    if risk_percent >= 70:
+        emoji = "😟"
+        level = "HIGH"
+    elif risk_percent >= 40:
+        emoji = "😐"
+        level = "MEDIUM"
+    else:
+        emoji = "🙂"
+        level = "LOW"
+
+    st.markdown(
+        f"""
+        ### {emoji} No-Show Risk Level: **{level}**
+        **Estimated Probability:** {risk_percent}%
+        """
+    )
+
+    st.progress(risk_percent / 100)
+
+    # 🚦 Traffic Light Indicators
+    c1, c2, c3 = st.columns(3)
+    c1.metric("🟢 Low Risk", "0–39%")
+    c2.metric("🟡 Medium Risk", "40–69%")
+    c3.metric("🔴 High Risk", "70–100%")
+
+    st.markdown("---")
+
+    # -----------------------------
+    # Risk Contribution Visual
+    # -----------------------------
+    st.subheader("📈 What factors increased the risk?")
+
+    chart_data = pd.DataFrame({
+        "Factor": [
+            "Lead Time",
+            "Past No-Shows",
+            "Reminder",
+            "Distance",
+            "Time of Day",
+            "Day Type"
+        ],
+        "Impact Score": [
+            25 if lead_time > 14 else 5,
+            25 if past_no_shows > 1 else 5,
+            20 if reminder == "No" else 5,
+            15 if distance == "Far" else 5,
+            10 if time_of_day == "Evening" else 5,
+            5 if day_type == "Weekend" else 2
+        ]
+    }).set_index("Factor")
+
+    st.bar_chart(chart_data)
+
+    # -----------------------------
+    # Explainability (Human Language)
+    # -----------------------------
+    st.subheader("🧠 Simple Explanation (Human-Readable)")
+
+    if reasons:
+        for r in reasons:
+            st.write("•", r)
+    else:
+        st.write("• Appointment looks stable with no major risk signals")
+
+    st.markdown("---")
+
+    # -----------------------------
+    # What-If Visual Insight
+    # -----------------------------
+    st.subheader("🔮 What if we send a reminder?")
+
+    improved_risk = max(risk_percent - 20, 0)
+
+    colA, colB = st.columns(2)
+    colA.metric("Current Risk", f"{risk_percent}%")
+    colB.metric("Risk After Reminder", f"{improved_risk}%", delta=f"-{risk_percent - improved_risk}%")
+
+    st.markdown("---")
+
+    # -----------------------------
+    # Recommendation
+    # -----------------------------
+    st.subheader("🛠 Recommended Action for Staff")
+
+    if risk_percent >= 70:
+        st.info("📞 Call patient + send reminder. Consider safe overbooking.")
+    elif risk_percent >= 40:
+        st.info("📩 Send reminder or confirmation message.")
+    else:
+        st.success("✅ No action needed. Appointment likely to be attended.")
+
+    st.caption(
+        "🔍 This is an **explainable operational intelligence prototype**. "
+        "In production, the same logic can be replaced with a trained ML model."
+    )
+)
+
     # -----------------------------
     # Risk Overview
     # -----------------------------
