@@ -34,7 +34,8 @@ Hospital & clinic operations staff.
 """)
 
 st.sidebar.markdown("---")
-st.sidebar.markdown("**Hackathon Prototype** Logic-focused • Interpretable • Decision-support")
+st.sidebar.markdown("**Hackathon Prototype**  
+Logic-focused • Interpretable • Decision-support")
 
 # -----------------------------
 # Main Title
