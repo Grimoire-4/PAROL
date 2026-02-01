@@ -1,55 +1,73 @@
 # =========================================
 # AI Predictor for Patient No-Show Appointments
-# Explainable Operational Intelligence
-# Hackathon-ready | Single-file | Zero-dependency
+# Hackathon Prototype | Single File
 # =========================================
 
 import streamlit as st
 import pandas as pd
 
 # -----------------------------
-# Page Configuration
+# Page Config (DO THIS FIRST)
 # -----------------------------
 st.set_page_config(
-    page_title="Patient No-Show Predictor",
+    page_title="Patient No-Show Predictor | GFBQ-Team-Grimoire",
     page_icon="🏥",
-    layout="centered"
+    layout="wide"
 )
 
 # -----------------------------
-# Force Light Theme + UI Styling
+# FORCE LIGHT THEME + RESET
 # -----------------------------
 st.markdown("""
 <style>
-html, body, [class*="css"] {
+html, body, .stApp {
     background-color: #f4f9ff !important;
 }
-.block-container {
-    padding: 2rem 3rem;
-}
-h1, h2, h3 {
-    color: #0b3c5d;
+
+* {
     font-family: 'Segoe UI', sans-serif;
 }
-div[data-testid="stVerticalBlock"] {
-    background-color: #ffffff;
-    border-radius: 14px;
-    padding: 1.5rem;
-    margin-bottom: 1.5rem;
-    box-shadow: 0 4px 14px rgba(0,0,0,0.06);
-}
-button[kind="primary"] {
-    background-color: #2a7be4 !important;
-    border-radius: 10px !important;
-    font-weight: 600 !important;
-}
-div[data-testid="stProgress"] > div > div {
-    background-image: linear-gradient(90deg, #2ecc71, #f1c40f, #e74c3c);
-}
-section[data-testid="stSidebar"] {
-    background-color: #eaf3ff;
-}
 </style>
+""", unsafe_allow_html=True)
+
+# =====================================================
+# 🔥 HERO SECTION (TOP OF PAGE – ALWAYS VISIBLE)
+# =====================================================
+st.markdown("""
+<div style="
+    width:100%;
+    background: linear-gradient(90deg, #1e3c72, #2a7be4);
+    padding:40px 20px;
+    border-radius:20px;
+    margin-bottom:40px;
+    text-align:center;
+    color:white;
+">
+
+<h1 style="font-size:48px; margin-bottom:10px;">
+🏥 AI Predictor for Patient No-Show Appointments
+</h1>
+
+<h2 style="font-size:22px; font-weight:400; margin-top:0;">
+Operational Risk Classification • Hackathon Prototype
+</h2>
+
+<hr style="border:1px solid rgba(255,255,255,0.4); width:60%; margin:25px auto;">
+
+<h2 style="font-size:26px; margin-bottom:5px;">
+👥 Team: <b>GFBQ-Team-Grimoire</b>
+</h2>
+
+<p style="font-size:18px; margin-top:5px;">
+Alhamda Iqbal Sadiq • Ashmira Mirza • Shifa Akbani • Khudaija Harmain
+</p>
+
+<p style="font-size:15px; margin-top:20px; opacity:0.95;">
+🧠 Decision-support system for hospital operations<br>
+⚠️ Not a medical diagnosis or clinical decision tool
+</p>
+
+</div>
 """, unsafe_allow_html=True)
 
 # -----------------------------
@@ -57,73 +75,30 @@ section[data-testid="stSidebar"] {
 # -----------------------------
 st.sidebar.title("🏥 Clinic Assistant")
 st.sidebar.markdown("""
-**Purpose:**  
-Predict **appointment no-show risk**  
-to improve hospital operations.
+**What does this tool do?**
 
-✔ Non-medical  
+Predicts **appointment no-show risk**  
+so clinics can:
+- Send reminders
+- Plan staffing
+- Reduce wasted slots
+
 ✔ Explainable  
-✔ Staff-friendly  
+✔ Non-medical  
+✔ Operational intelligence
 """)
 st.sidebar.caption("Hackathon Prototype")
 
 # -----------------------------
-# HERO HEADER (Always Visible)
+# Main Content
 # -----------------------------
-st.markdown("""
-<div style="
-    background: linear-gradient(90deg, #2a7be4, #5fa8ff);
-    padding: 30px;
-    border-radius: 18px;
-    color: white;
-    text-align: center;
-    margin-bottom: 30px;
-">
-
-<h1 style="margin-bottom: 10px; color: white;">
-🏥 AI Predictor for Patient No-Show Appointments
-</h1>
-
-<h3 style="margin-top: 0; font-weight: 400; color: #eaf3ff;">
-Operational Risk Classification • Hackathon Prototype
-</h3>
-
-<hr style="border: 1px solid rgba(255,255,255,0.3); margin: 20px 0;">
-
-<p style="font-size: 18px; margin-bottom: 5px;">
-<b>Team:</b> GFBQ-Team-Grimoire
-</p>
-
-<p style="font-size: 16px; margin-top: 0;">
-Alhamda Iqbal Sadiq • Ashmira Mirza • Shifa Akbani • Khudaija Harmain
-</p>
-
-<p style="font-size: 14px; opacity: 0.9; margin-top: 15px;">
-🧠 Decision-support system for hospital operations  
-⚠️ Not a medical diagnosis tool
-</p>
-
-</div>
-""", unsafe_allow_html=True)
+st.header("📅 Enter Appointment Details")
 
 # -----------------------------
-# Main Header
-# -----------------------------
-st.title("📅 Patient Appointment No-Show Predictor")
-
-st.markdown("""
-This tool helps clinics **reduce missed appointments**
-by identifying **high-risk bookings in advance** and
-suggesting **simple preventive actions**.
-""")
-
-st.markdown("---")
-
-# -----------------------------
-# Risk Logic (Balanced & Realistic)
+# Risk Logic
 # -----------------------------
 def predict_no_show_risk(lead_time, past_no_shows, reminder, distance, time_of_day, day_type):
-    risk = 10  # base risk
+    risk = 10
     reasons = []
 
     if lead_time > 14:
@@ -132,7 +107,7 @@ def predict_no_show_risk(lead_time, past_no_shows, reminder, distance, time_of_d
 
     if past_no_shows >= 1:
         risk += 25
-        reasons.append("❌ Previous missed appointment(s)")
+        reasons.append("❌ History of missed appointments")
 
     if reminder == "No":
         risk += 25
@@ -140,11 +115,11 @@ def predict_no_show_risk(lead_time, past_no_shows, reminder, distance, time_of_d
 
     if distance == "Far":
         risk += 15
-        reasons.append("📍 Patient lives far from clinic")
+        reasons.append("📍 Patient lives far away")
 
     if time_of_day == "Evening":
         risk += 10
-        reasons.append("🌙 Evening appointment slot")
+        reasons.append("🌙 Evening appointment")
 
     if day_type == "Weekend":
         risk += 10
@@ -157,26 +132,24 @@ def predict_no_show_risk(lead_time, past_no_shows, reminder, distance, time_of_d
     return min(risk, 100), reasons
 
 # -----------------------------
-# Input Section
+# Inputs
 # -----------------------------
-st.header("📝 Appointment Details")
-
 c1, c2 = st.columns(2)
 
 with c1:
-    lead_time = st.slider("📆 Days between booking & appointment", 1, 30, 10)
-    past_no_shows = st.slider("❌ Number of past no-shows", 0, 5, 0)
-    reminder = st.selectbox("📩 Reminder sent?", ["Yes", "No"])
+    lead_time = st.slider("📆 Days before appointment was booked", 1, 30, 10)
+    past_no_shows = st.slider("❌ Number of past missed appointments", 0, 5, 0)
+    reminder = st.selectbox("📩 Was a reminder sent?", ["Yes", "No"])
 
 with c2:
     time_of_day = st.selectbox("⏰ Appointment time", ["Morning", "Evening"])
-    day_type = st.selectbox("🗓 Appointment day", ["Weekday", "Weekend"])
-    distance = st.selectbox("📍 Patient distance", ["Near", "Far"])
+    day_type = st.selectbox("🗓 Day of appointment", ["Weekday", "Weekend"])
+    distance = st.selectbox("📍 Patient distance from clinic", ["Near", "Far"])
 
 st.markdown("---")
 
 # -----------------------------
-# Prediction Section
+# Prediction
 # -----------------------------
 if st.button("🔍 Predict No-Show Risk", use_container_width=True):
 
@@ -184,49 +157,19 @@ if st.button("🔍 Predict No-Show Risk", use_container_width=True):
         lead_time, past_no_shows, reminder, distance, time_of_day, day_type
     )
 
-    st.subheader("📊 Risk Overview")
+    st.subheader("📊 Risk Assessment")
 
     if risk_percent >= 70:
-        emoji, level = "😟", "HIGH"
+        emoji, level = "🔴", "HIGH"
     elif risk_percent >= 40:
-        emoji, level = "😐", "MEDIUM"
+        emoji, level = "🟡", "MEDIUM"
     else:
-        emoji, level = "🙂", "LOW"
+        emoji, level = "🟢", "LOW"
 
-    st.markdown(f"### {emoji} Risk Level: **{level}**  \n**Estimated Probability:** {risk_percent}%")
+    st.markdown(f"## {emoji} {level} RISK — {risk_percent}% chance of no-show")
     st.progress(risk_percent / 100)
 
-    cA, cB, cC = st.columns(3)
-    cA.metric("🟢 Low", "0–39%")
-    cB.metric("🟡 Medium", "40–69%")
-    cC.metric("🔴 High", "70–100%")
-
-    st.markdown("---")
-
-    # -----------------------------
-    # Visual Risk Contribution
-    # -----------------------------
-    st.subheader("📈 Risk Contribution Analysis")
-
-    chart_data = pd.DataFrame({
-        "Factor": ["Lead Time", "Past No-Shows", "Reminder", "Distance", "Time", "Day"],
-        "Impact": [
-            30 if lead_time > 14 else 5,
-            25 if past_no_shows >= 1 else 5,
-            25 if reminder == "No" else 5,
-            15 if distance == "Far" else 5,
-            10 if time_of_day == "Evening" else 5,
-            10 if day_type == "Weekend" else 5
-        ]
-    }).set_index("Factor")
-
-    st.bar_chart(chart_data)
-
-    # -----------------------------
-    # Explainability
-    # -----------------------------
     st.subheader("🧠 Why this risk?")
-
     if reasons:
         for r in reasons:
             st.write("•", r)
@@ -235,31 +178,15 @@ if st.button("🔍 Predict No-Show Risk", use_container_width=True):
 
     st.markdown("---")
 
-    # -----------------------------
-    # What-If Insight
-    # -----------------------------
-    st.subheader("🔮 What if a reminder is sent?")
-    improved = max(risk_percent - 20, 0)
-
-    colX, colY = st.columns(2)
-    colX.metric("Current Risk", f"{risk_percent}%")
-    colY.metric("After Reminder", f"{improved}%", delta=f"-{risk_percent - improved}%")
-
-    st.markdown("---")
-
-    # -----------------------------
-    # Recommendation
-    # -----------------------------
     st.subheader("🛠 Recommended Action")
-
     if risk_percent >= 70:
-        st.info("📞 Call patient + send reminder. Consider safe overbooking.")
+        st.error("📞 Call patient + send reminder. Consider safe overbooking.")
     elif risk_percent >= 40:
-        st.info("📩 Send reminder or confirmation message.")
+        st.warning("📩 Send reminder or confirmation message.")
     else:
         st.success("✅ No action needed — appointment likely to be attended.")
 
     st.caption(
-        "🔍 Explainable operational intelligence prototype. "
-        "Production systems can replace this logic with trained ML models."
+        "Explainable operational intelligence prototype. "
+        "ML models can replace this logic in production."
     )
