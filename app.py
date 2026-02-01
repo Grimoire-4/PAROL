@@ -17,20 +17,52 @@ st.set_page_config(
 
 st.markdown("""
 <style>
-    body {
-        background: linear-gradient(180deg, #f5faff, #ffffff);
-    }
-    .main {
-        background-color: #f5faff;
-    }
-    h1, h2, h3 {
-        color: #003366;
-    }
-    .block-container {
-        padding: 2rem;
-    }
+
+/* Force light background */
+html, body, [class*="css"] {
+    background-color: #f4f9ff !important;
+}
+
+/* Main container */
+.block-container {
+    padding: 2rem 3rem;
+}
+
+/* Headers */
+h1, h2, h3 {
+    color: #0b3c5d;
+    font-family: 'Segoe UI', sans-serif;
+}
+
+/* Card-style sections */
+div[data-testid="stVerticalBlock"] {
+    background-color: #ffffff;
+    border-radius: 12px;
+    padding: 1.5rem;
+    margin-bottom: 1.5rem;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+}
+
+/* Buttons */
+button[kind="primary"] {
+    background-color: #2a7be4 !important;
+    border-radius: 8px !important;
+    font-weight: 600 !important;
+}
+
+/* Progress bar */
+div[data-testid="stProgress"] > div > div {
+    background-image: linear-gradient(90deg, #2ecc71, #f1c40f, #e74c3c);
+}
+
+/* Sidebar */
+section[data-testid="stSidebar"] {
+    background-color: #eaf3ff;
+}
+
 </style>
 """, unsafe_allow_html=True)
+
 
 # -----------------------------
 # Sidebar
